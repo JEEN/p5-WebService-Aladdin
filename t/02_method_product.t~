@@ -1,0 +1,14 @@
+use strict;
+use warnings;
+use Test::Base tests => 4;
+
+use WebService::Aladdin;
+
+my $aladdin = WebService::Aladdin->new();
+ok $aladdin;
+
+my $data = $aladdin->product('9238043167');
+ok $data;
+isa_ok $data->item, 'HASH';
+
+ok $data->items->[0]->title;
