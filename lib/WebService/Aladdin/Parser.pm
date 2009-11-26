@@ -15,7 +15,10 @@ sub parse_product {
     my ($class, $res) = @_;
 
     my $data = XML::FeedPP->new($res->content); 
-    my $i = $data->{rss}->{channel}->{item}->[0];
+    $data->normalize();
+
+    my @items = $data->get_item();
+    my $i = $items[0];
 
     my $item = WebService::Aladdin::Item->new;
     if ($i->{'aladdin:bookinfo'}) { 
@@ -28,7 +31,7 @@ sub parse_product {
 	$item = WebService::Aladdin::Item::DVD->new;
 	$item->init(delete $i->{'aladdin:dvdinfo'});
     }
-    
+
     foreach my $key (keys %{ $i }) {
 	my $type = $key;
 	$type =~ s/(?:aladdin:|dc:|:encoded)//;
@@ -44,7 +47,7 @@ sub parse_search {
     my @items;
     if ($res->is_success) {
 	my $data = XML::FeedPP->new($res->content);
-        for my $i (@{ $data->{rss}->{channel}->{item} }) {
+        for my $i ( $data->get_item() ) {
             my $item = WebService::Aladdin::Item->new;
             foreach my $key (keys %{ $i }) {
                 my $type = $key;
@@ -56,10 +59,10 @@ sub parse_search {
             unshift @items, $item;
         }
         $p->items(\@items);
-        $p->itemsPerPage($data->{rss}->{channel}->{'opensearch:itemsPerPage'});
-        $p->totalResults($data->{rss}->{channel}->{'opensearch:totalResults'});
-        $p->link($data->{rss}->{channel}->{'link'});
-        $p->startIndex($data->{rss}->{channel}->{'opensearch:startIndex'});
+        $p->itemsPerPage($data->get('opensearch:itemsPerPage'));
+        $p->totalResults($data->get('opensearch:totalResults'));
+        $p->link($data->get('link'));
+        $p->startIndex($data->get('opensearch:startIndex'));
     } else {
         $p->status($res->status_line);
         $p->items([]);
