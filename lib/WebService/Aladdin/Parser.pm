@@ -22,31 +22,35 @@ sub parse_product {
 
     my $item = WebService::Aladdin::Item->new;
     if ($i->{'aladdin:bookinfo'}) { 
-	$item = WebService::Aladdin::Item::Book->new;
-	$item->init(delete $i->{'aladdin:bookinfo'});
-    } elsif ($i->{'aladdin:musicinfo'}) {
-	$item = WebService::Aladdin::Item::Music->new;
-	$item->init(delete $i->{'aladdin:musicinfo'});
-    } elsif ($i->{'aladdin:dvdinfo'}) {
-	$item = WebService::Aladdin::Item::DVD->new;
-	$item->init(delete $i->{'aladdin:dvdinfo'});
+        $item = WebService::Aladdin::Item::Book->new;
+        $item->init(delete $i->{'aladdin:bookinfo'});
+    }
+    elsif ($i->{'aladdin:musicinfo'}) {
+        $item = WebService::Aladdin::Item::Music->new;
+        $item->init(delete $i->{'aladdin:musicinfo'});
+    }
+    elsif ($i->{'aladdin:dvdinfo'}) {
+        $item = WebService::Aladdin::Item::DVD->new;
+        $item->init(delete $i->{'aladdin:dvdinfo'});
     }
 
     foreach my $key (keys %{ $i }) {
-	my $type = $key;
-	$type =~ s/(?:aladdin:|dc:|:encoded)//;
-	$type = lcfirst $type;
-	$item->$type($i->{$key});
+        my $type = $key;
+        $type =~ s/(?:aladdin:|dc:|:encoded)//;
+        $type = lcfirst $type;
+        $item->$type($i->{$key});
     }
     $item;
 }
 
 sub parse_search {
     my ($class, $res) = @_;
+
     my $p = WebService::Aladdin::Items->new;
     my @items;
+
     if ($res->is_success) {
-	my $data = XML::FeedPP->new($res->content);
+        my $data = XML::FeedPP->new($res->content);
         for my $i ( $data->get_item() ) {
             my $item = WebService::Aladdin::Item->new;
             foreach my $key (keys %{ $i }) {
