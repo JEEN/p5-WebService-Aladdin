@@ -1,10 +1,18 @@
 Revision history for Perl extension WebService::Aladdin
 
-0.0701 Fri Dec 30 01:30:00 2011 KST
+0.0705  Fri Dec 30 01:30:00 2011 KST
+    - Fixed test fails
+
+0.0703  Fri Jul 16 20:30:00 2010 KST
     - fixed test fails
 
-0.07  Thr Nov 26 11:30:00 2009
-    - fixed some bugs   
+0.0701  Thu Mar 25 19:00:00 2010 KST
+    - fixed pod typos (@keedi++)
+ 
+0.07  Thu Mar 25 18:30:00 2010 KST
+    - fixed some bugs (thanks to @keedi)
+    - corrected pod description
+
 0.06  Thu Jul  3 12:00:00 2008
     - added product method
 

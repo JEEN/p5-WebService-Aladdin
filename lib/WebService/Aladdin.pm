@@ -10,7 +10,7 @@ use Carp;
 use WebService::Aladdin::Parser;
 
 use vars qw($VERSION);
-$VERSION = '0.0701';
+$VERSION = '0.0705';
 
 my $api_url_search = "http://www.aladdin.co.kr/ttb/api/search.aspx";
 my $api_url_product = "http://www.aladdin.co.kr/ttb/api/ItemLookUp.aspx";
@@ -36,14 +36,12 @@ sub product {
 
     $uri->query_form( TTBKey => $self->{TTBKey},
 		      ItemId => $id,
-		      ItemIdType => $args->{ItemIdType},
-		      Cover  => $args->{Cover},
-		      Partner => $args->{Partner},
 		      Output  => 'OS',
 	);
     my $res = $self->{ua}->get($uri);
     WebService::Aladdin::Parser->parse_product($res);
 }
+
 sub search {
     my ($self, $keyword, $args) = @_;
 
@@ -71,6 +69,8 @@ sub search {
 1;
 __END__
 
+=encoding utf8
+
 =head1 NAME
 
 WebService::Aladdin - Aladdin WebService API Module
@@ -79,11 +79,12 @@ WebService::Aladdin - Aladdin WebService API Module
 
   use WebService::Aladdin;
 
-  my $p = WebService::Aladdin->new( TTBKey => 'TTBKey' );
+  my $p = WebService::Aladdin->new( TTBKey => 'Your TTBKey' );
   my $data = $p->search('Perl');
   for my $item (@{ $data }) {
-      $data->title;
+      print $item->title, "\n";
   }
+
 =head1 DESCRIPTION
 
 WebService::Aladdin is Aladdin WebService API Module.
@@ -92,7 +93,7 @@ They mainly sell books and Gift and DVD and etc.
 
 =head1 FUNCTIONS
 
-=head2 new( TTBKey => 'TTBKey' )
+=head2 new( TTBKey => 'Your TTBKey' )
 
 Returns an instance of this module. If you don't enter TTBKey parameter, It's ok. 
 Because default TTBKey is mine. :-)
@@ -102,15 +103,15 @@ Because default TTBKey is mine. :-)
 Returns search results.
 
   my $data = $p->search('Perl', { 
-    SearchTarget => $SearchTarget, # (?:Book|Music|DVD|Beauty|Gift)
-    QueryType => $QueryType,  # (?:Title|Author|Publisher)
-    Start => $Start,          # search result start page
-    MaxResults => $MaxResults, # max number of a page
-    Sort => $Sort,             # (?:PublishTime|Title|SalesPoint|CustomerRating|MyReviewCount)
-    Cover => $Cover,           # (?:Mid|Small|Big|Mini|None)
-    TitleCut => $TitleCut,     # truncate
-    CategoryId => $CategoryId, 
-    Partner => $Partner,  
+      SearchTarget => $SearchTarget, # (?:Book|Music|DVD|Beauty|Gift)
+      QueryType => $QueryType,       # (?:Title|Author|Publisher)
+      Start => $Start,               # search result start page
+      MaxResults => $MaxResults,     # max number of a page
+      Sort => $Sort,                 # (?:PublishTime|Title|SalesPoint|CustomerRating|MyReviewCount)
+      Cover => $Cover,               # (?:Mid|Small|Big|Mini|None)
+      TitleCut => $TitleCut,         # truncate
+      CategoryId => $CategoryId, 
+      Partner => $Partner,  
  });
 
 =head2 product( $keyword, \%options )
@@ -118,8 +119,8 @@ Returns search results.
 Returns product information.
 
   my $data = $p->product($ISBN, {
-    ItemIdType => $args->{ItemIdType}, #(?:ISBN|ItemId)
-    Cover  => $args->{Cover},  # (?:Mid|Small|Big|Mini|None)
+    ItemIdType => $args->{ItemIdType}, # (?:ISBN|ItemId)
+    Cover  => $args->{Cover},          # (?:Mid|Small|Big|Mini|None)
     Partner => $args->{Partner},
 });
 
@@ -132,7 +133,8 @@ it under the same terms as Perl itself.
 
 =head1 SEE ALSO
 
-http://www.aladdin.co.kr/ttb/wguide.aspx?pn=apiguide
-http://blog.aladdin.co.kr/ttb/category/16526941?communitytype=MyPaper
+L<http://www.aladdin.co.kr/ttb/wguide.aspx?pn=apiguide>
+
+L<http://blog.aladdin.co.kr/ttb/category/16526941?communitytype=MyPaper>
 
 =cut

@@ -11,3 +11,4 @@ MANIFEST			This list of files
 t/00_compile.t
 t/01_method_search.t
 t/02_method_product.t
+META.yml                                 Module meta-data (added by MakeMaker)
