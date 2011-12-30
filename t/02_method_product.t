@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::Base tests => 2;
+use Test::More skip_all => 'default api key is blocked';
 
 use WebService::Aladdin;
 
