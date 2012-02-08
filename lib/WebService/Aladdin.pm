@@ -8,7 +8,7 @@ use Carp;
 use WebService::Aladdin::Parser;
 
 use vars qw($VERSION);
-$VERSION = '0.0705';
+$VERSION = '0.0706';
 
 my $api_url_search = "http://www.aladdin.co.kr/ttb/api/search.aspx";
 my $api_url_product = "http://www.aladdin.co.kr/ttb/api/ItemLookUp.aspx";
