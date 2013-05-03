@@ -1,5 +1,8 @@
 Revision history for Perl extension WebService::Aladdin
 
+0.08    Fri May  3 12:00:00 2013 KST
+    - Fix RT #84281: Packaging bug: inc directory missing
+
 0.0706  Wed Feb  8 23:00:00 2011 KST
     - Added repository on resouces
 
